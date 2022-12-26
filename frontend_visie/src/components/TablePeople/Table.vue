@@ -12,11 +12,19 @@
             </button>
             <button class="refresh-list" @click="this.getPeople()">
                 <div class="btn-inside">
-                    <font-awesome-icon class=" refresh-icon" icon="fa-solid fa-arrows-rotate" color="#832727" size="2x" />
+                    <font-awesome-icon class=" refresh-icon" icon="fa-solid fa-arrows-rotate" color="#832727"
+                        size="2x" />
                     <p>Atualizar lista de pessoas</p>
                 </div>
             </button>
         </div>
+        <button :disabled="pagination.currentPage <= 1" @click="this.PrevPage()">
+            Prev Page
+        </button>
+        Page {{ pagination.currentPage }} of {{ pagination.totalPages }}
+        <button :disabled="pagination.currentPage >= pagination.totalPages" @click.stop.prevent="this.nextPage()">
+            Next Page
+        </button>
         <table>
             <thead>
                 <tr>
@@ -32,12 +40,13 @@
             </thead>
             <tbody v-if="peopleData">
                 <TableRowVue v-for="(person, index) in peopleData.data" v-bind:key="index" :id_pessoa="person.id_pessoa"
-                    :nome="person.nome" :cpf="person.cpf" :rg="person.rg"
-                    :data_nascimento="person.data_nascimento" :data_admissao="person.data_admissao" :funcao="person.funcao"/>
+                    :nome="person.nome" :cpf="person.cpf" :rg="person.rg" :data_nascimento="person.data_nascimento"
+                    :data_admissao="person.data_admissao" :funcao="person.funcao" />
             </tbody>
         </table>
     </div>
-    <CreatePersonVue v-if="popupTriggers.buttonTrigger" :TogglePopup="() => TogglePopup('buttonTrigger')"></CreatePersonVue>
+    <CreatePersonVue v-if="popupTriggers.buttonTrigger" :TogglePopup="() => TogglePopup('buttonTrigger')">
+    </CreatePersonVue>
 </template>
 
 
@@ -46,7 +55,17 @@ import TableRowVue from './TableRow.vue';
 import axios from "axios";
 import CreatePersonVue from "@/components/TablePeople/Modal/CreatePerson.vue";
 import { ref } from 'vue';
+import { computed, reactive, watch } from 'vue';
 
+
+const pagination = reactive({
+    currentPage: 1,
+    perPage: 12,
+    responseLength: 0,
+    totalPages: computed(() =>
+        Math.ceil(pagination.responseLength / pagination.perPage)
+    ),
+});
 
 export default {
     name: 'TablePeople',
@@ -56,20 +75,35 @@ export default {
     },
     data: () => {
         return {
-            peopleData: null
+            peopleData: null,
+            limit: 12,
+            offset: 0
         }
     },
     methods: {
         async getPeople() {
             try {
-                let response = await axios.get("http://localhost:5000/people?limit=2&offset=1", { headers: { "Access-Control-Allow-Origin": "*", } })
+                let response = await axios.get(`http://localhost:5000/people?limit=${this.limit}&offset=${this.offset}`, { headers: { "Access-Control-Allow-Origin": "*", } })
                 this.peopleData = response.data
-                console.log(this.peopleData)
-
+                this.pagination.responseLength = this.peopleData.total
             }
             catch (error) {
                 this.login_error = true
             };
+        },
+
+        async nextPage() {
+            this.offset += 12
+            this.pagination.currentPage++
+            await this.getPeople()
+
+        },
+
+        async PrevPage() {
+            this.offset -= 12
+            this.pagination.currentPage--
+            await this.getPeople()
+
         }
     },
     setup() {
@@ -79,9 +113,11 @@ export default {
         });
         const TogglePopup = (trigger) => {
             popupTriggers.value[trigger] = !popupTriggers.value[trigger]
-        }
-        
+        };
+
+
         return {
+            pagination,
             popupTriggers,
             TogglePopup,
             CreatePersonVue
@@ -89,7 +125,7 @@ export default {
     },
     async mounted() {
         this.getPeople()
-    }
+    },
 }
 </script>
 
@@ -154,7 +190,8 @@ table>tbody>tr:hover {
     transition: 0.3s ease-in-out;
 }
 
-.btn-create, .refresh-list{
+.btn-create,
+.refresh-list {
     display: inline-flex;
     margin-right: 10%;
     border: 0;
@@ -163,7 +200,8 @@ table>tbody>tr:hover {
     border-radius: 12px;
 }
 
-.btn-create:hover, .refresh-list:hover {
+.btn-create:hover,
+.refresh-list:hover {
     background-color: rgba(182, 0, 0, .2);
     font-weight: bold;
     color: #fff;
