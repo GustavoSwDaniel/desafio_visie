@@ -2,4 +2,4 @@ from flask import Blueprint
 
 bp = Blueprint('people', __name__)
 
-from src.visie.people import controller
+from visie.people import controller

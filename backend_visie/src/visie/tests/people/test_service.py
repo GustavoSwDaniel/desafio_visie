@@ -4,8 +4,8 @@ from unittest.mock import MagicMock
 import pytest
 from faker import Faker
 
-from src.exception import RepositoryException, DataNotFoundException
-from src.visie.people.service import PeopleService
+from exception import RepositoryException, DataNotFoundException
+from visie.people.service import PeopleService
 
 fake = Faker('pt_BR')
 

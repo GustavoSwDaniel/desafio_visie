@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, post_load
-from src.visie.utils.cpf_validator import ValidateCPF
+from visie.utils.cpf_validator import ValidateCPF
 
 
 class Person(Schema):

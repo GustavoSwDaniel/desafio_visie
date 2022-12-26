@@ -1,10 +1,10 @@
 import datetime
 from typing import Dict, List
 
-from src.exception import DataNotFoundException
-from src.visie.people.repository import PeopleRepository
-from src.visie.people.models import People
-from src.visie.utils.paginate import paginate
+from exception import DataNotFoundException
+from visie.people.repository import PeopleRepository
+from visie.people.models import People
+from visie.utils.paginate import paginate
 
 
 class PeopleService:

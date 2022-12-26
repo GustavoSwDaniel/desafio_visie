@@ -1,6 +1,6 @@
 import datetime
 
-from src.visie.infrastructure.database.models_base.base import Base
+from visie.infrastructure.database.models_base.base import Base
 from sqlalchemy import Column, Integer, String, Date
 
 

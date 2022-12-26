@@ -1,7 +1,7 @@
 from sqlalchemy import update, select
 
-from src.visie.infrastructure.repository.base_repository import IRepository
-from src.visie.infrastructure.database.database_sql import Base
+from visie.infrastructure.repository.base_repository import IRepository
+from visie.infrastructure.database.database_sql import Base
 
 
 class SqlRepository(IRepository):

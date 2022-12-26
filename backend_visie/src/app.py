@@ -1,6 +1,6 @@
 import os
 
-from src.visie import create_app
+from visie import create_app
 
 app = create_app()
 

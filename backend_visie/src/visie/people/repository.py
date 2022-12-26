@@ -1,8 +1,8 @@
 from sqlalchemy import select, update, func
 
-from src.exception import RepositoryException
-from src.visie.infrastructure.repository.repository import SqlRepository
-from src.visie.people.models import People
+from exception import RepositoryException
+from visie.infrastructure.repository.repository import SqlRepository
+from visie.people.models import People
 
 
 class PeopleRepository(SqlRepository):

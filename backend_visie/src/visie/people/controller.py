@@ -1,10 +1,10 @@
 from flask import request, jsonify
 
-from src.visie.people import bp
-from src.visie import db
-from src.visie.people import schema as people_schema
-from src.visie.people.repository import PeopleRepository
-from src.visie.people.service import PeopleService
+from visie.people import bp
+from visie import db
+from visie.people import schema as people_schema
+from visie.people.repository import PeopleRepository
+from visie.people.service import PeopleService
 
 
 @bp.route('/person', methods=['POST'])

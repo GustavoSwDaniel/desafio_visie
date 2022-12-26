@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.visie.people.service import PeopleService
+from visie.people.service import PeopleService
 
 
 @pytest.fixture
